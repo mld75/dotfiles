@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+RETENTION_DAYS="30"
+
+home-manager expire-generations "-${RETENTION_DAYS} days"
+nix-env --delete-generations "${RETENTION_DAYS}d"
+nix-collect-garbage
