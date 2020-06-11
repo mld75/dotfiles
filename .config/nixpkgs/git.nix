@@ -12,7 +12,7 @@
   programs.git = {
     enable = true;
     userName = "Jörn Gersdorf";
-    userEmail = "joern.gersdorf@dwpbank.de";
+    userEmail = "j0xaf@j0xaf.de";
     ignores = [
       "*~"
       ".DS_Store" ];
@@ -29,12 +29,6 @@
       };
       ghq = {
         root = "${config.home.homeDirectory}/git";
-      };
-      "gitlab \"git.dwpsoftware.hu/api/v4\"" = {
-        user = "dwp5080";
-      };
-      "gitlab \"git.f-i-ts.de/api/v4\"" = {
-        user = "dwp5080";
       };
     };
   };

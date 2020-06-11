@@ -16,7 +16,7 @@
       config = {
         modifier = "${modifier}";
         assigns = {
-          "0: chat" = [{ class = "Mattermost|Slack"; }];
+          "0: chat" = [{ class = "discord|Mattermost|Slack"; }];
           "1: terminal" = [{ class = "Alacritty|Gnome-terminal|.terminator-wrapped"; }];
           "9: browser" = [{ class = "Firefox|Chromium-browser"; }];
           "2: editor" = [{ class="Emacs|Code"; }];
@@ -24,13 +24,25 @@
         };
 
         gaps = {
-          inner = 15;
-          outer = 15;
+          inner = 0;
+          outer = 0;
         };
 
         keybindings = lib.mkOptionDefault {
-            # "${modifier}+Return" = "exec ${pkgs.terminator}/bin/terminator"; # Bug https://github.com/NixOS/nixpkgs/issues/56943
             "${modifier}+period" = "exec i3lock";
+
+            "${modifier}+space" = "floating toggle";
+            "${modifier}+Shift+space" = "focus_mode toggle";
+
+            "${modifier}+Escape" = "workspace prev";
+
+            "${modifier}+Shift+d" = "gaps inner current set 0; gaps outer current set 0";
+            "${modifier}+o" = "sticky toggle";
+            "${modifier}+s" = "gaps inner current plus 5";
+            "${modifier}+Shift+s" = "gaps inner current minus 5";
+            "${modifier}+t" = "split toggle";
+            "${modifier}+Shift+t" = "gaps inner current set 15; gaps outer current set 15";
+
             "${modifier}+1" = "workspace ${workspace_terminal}";
             "${modifier}+2" = "workspace ${workspace_editor}";
             "${modifier}+3" = "workspace ${workspace_ide}";
@@ -47,6 +59,9 @@
             "${modifier}+Control+Right" = "move workspace to output Right";
             "${modifier}+Control+Up" = "move workspace to output Up";
             "${modifier}+Control+Down" = "move workspace to output Down";
+            "${modifier}+Prior" = "workspace prev";
+            "${modifier}+Next" = "workspace next";
+            "${modifier}+numbersign" = "workspace back_and_forth";
             "XF86AudioRaiseVolume" = "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%";
             "XF86AudioLowerVolume" = "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%";
             "XF86AudioMute" = "exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle";
@@ -61,26 +76,19 @@
         window.commands = [
            { criteria = { class = "^.*"; }; command = "border pixel 2"; }
            { criteria = { class = "Alacritty|Gnome-terminal|.terminator-wrapped"; }; command = "focus"; }
-           { criteria = { class = "Firefox|Chromium-browser"; }; command = "focus"; }
-           { criteria = { class = "Emacs|Code"; }; command = "focus"; }
-           { criteria = { class = "jetbrains-idea"; }; command = "focus"; }
+           { criteria = { class="^jetbrains-.+"; window_type="dialog"; }; command = "floating enable; move position center"; }
         ];
+        window.hideEdgeBorders = "smart";
 
-        bars = [
-          # { statusCommand = "LC_ALL=C ${pkgs.i3status}/bin/i3status"; }
-          #{
-          #  fonts = [ "pango:mono 10" ];
-          #  statusCommand = "${pkgs.i3blocks}/bin/i3blocks";
-          #  position = "top";
-          #  mode = "dock";
-          #}
-        ];
+        bars = [ ];
 
         startup = [
+          { command = "systemctl --user restart polybar"; notification = false; always = true; }
           { command = "autorandr --change"; notification = false; }
           { command = "xinput --set-prop \"ETPS/2 Elantech Touchpad\" \"libinput Natural Scrolling Enabled\" 1"; notification = false; always = true; }
           { command = "xinput --set-prop \"ETPS/2 Elantech Touchpad\" \"libinput Tapping Enabled\" 1"; notification = false; always = true; }
           { command = "${pkgs.xwallpaper}/bin/xwallpaper --zoom ${config.xdg.configHome}/wallpaper"; notification = false; always = true; }
+          { command = "${pkgs.xcompmgr}/bin/xcompmgr -c -l0 -t0 -r0 -o.00"; always=true; notification = false; }
         ];
       };
     };
