@@ -23,6 +23,7 @@ in
 {
   imports = [
     ./aws.nix
+    ./mail
     ./git.nix
     ./java.nix
 #    ./parcellite.nix

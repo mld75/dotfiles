@@ -85,8 +85,8 @@
         startup = [
           { command = "systemctl --user restart polybar"; notification = false; always = true; }
           { command = "autorandr --change"; notification = false; }
-          { command = "xinput --set-prop \"ETPS/2 Elantech Touchpad\" \"libinput Natural Scrolling Enabled\" 1"; notification = false; always = true; }
-          { command = "xinput --set-prop \"ETPS/2 Elantech Touchpad\" \"libinput Tapping Enabled\" 1"; notification = false; always = true; }
+          { command = "xinput --set-prop \"Elan Touchpad\" \"libinput Natural Scrolling Enabled\" 1"; notification = false; always = true; }
+          { command = "xinput --set-prop \"Elan Touchpad\" \"libinput Tapping Enabled\" 1"; notification = false; always = true; }
           { command = "${pkgs.xwallpaper}/bin/xwallpaper --zoom ${config.xdg.configHome}/wallpaper"; notification = false; always = true; }
           { command = "${pkgs.xcompmgr}/bin/xcompmgr -c -l0 -t0 -r0 -o.00"; always=true; notification = false; }
         ];

@@ -1,6 +1,7 @@
 { pkgs, config, lib ? pkgs.stdenv.lib, ... }:
 let
-    myemacs = (pkgs.emacsWithPackages (with (pkgs.emacsPackagesNgGen pkgs.emacs26); emacs-libvterm));
+    myemacs = (pkgs.emacsWithPackages (with (pkgs.emacsPackagesNgGen pkgs.emacs26); vterm));
+    imgdupes = (pkgs.callPackage ../pkgs/imgdupes {});
 in {
   imports = [
     ./zsh.nix
@@ -14,6 +15,8 @@ in {
       ack
       acpi # for checking battery status on the CLI
 #      all-hies.versions.ghc864
+      age
+      aqbanking
       autojump
       ansible
       binutils # for libvterm + emacs
@@ -43,11 +46,17 @@ in {
       (exe haskellPackages.nix-derivation) # broken as of 20191021
 #      helm # coredump 20.11.2018
       highlight
+      hledger
+      hledger-ui
+      hledger-web
+      hledger-iadd
       htop
       httpie
       icdiff
       iftop
+#      imgdupes
       iotop
+      jdupes
       jq
       less
       libtool # for libvterm + emacs
@@ -60,6 +69,7 @@ in {
       kind
       kubectl
       kubectx
+      minisign
       mtr
 #      (import fetchFromGitHub {
 #        owner = "nmattia";
@@ -71,11 +81,14 @@ in {
       nix-prefetch-github
       nettools
       openjdk11
-      (pass.withExtensions(e: [ e.pass-import ]))
+      (pass.withExtensions(e: [ e.pass-import  e.pass-otp e.pass-import ]))
       pinentry_emacs
       #pinentry.gnome3
       plantuml
       playerctl
+      psmisc
+      pulsemixer
+      restic
       ripgrep
       speedtest-cli
       st
@@ -87,6 +100,7 @@ in {
       unzip
       #vagrant
       youtube-dl
+      zbar
       ];
 
     sessionVariables = {
@@ -104,7 +118,12 @@ in {
 
     direnv.enable = true;
     fzf.enable = true;
-    gpg.enable = true;
+    gpg = {
+      enable = true;
+      settings = {
+        
+      };
+    };
     htop.enable = true;
     lsd.enable = true;
     info.enable = true;
@@ -113,8 +132,11 @@ in {
 
     ssh = {
       enable = true;
-      matchBlocks."vnc.df.dwpsoftware.hu" = {
-        identityFile = "/home/dwp5080/.ssh/vnc@dwpsoftware.hu";
+      matchBlocks = {
+        "rsync.net" = {
+          hostname = "ch-s012.rsync.net";
+          user = "14210";
+        };
       };
     };
 
