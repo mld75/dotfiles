@@ -25,7 +25,7 @@ in
     ./aws.nix
     ./mail
     ./git.nix
-    ./java.nix
+#    ./java.nix
 #    ./parcellite.nix
     ./shell
     ./urxvt.nix
@@ -58,10 +58,10 @@ in
       maxCacheTtl = 7200;
       maxCacheTtlSsh = 7200;
       enableSshSupport = true;
-      extraConfig = ''
-        allow-emacs-pinentry
-        pinentry-program ${pkgs.pinentry_gnome}/bin/pinentry-gnome3
-      '';
+#      extraConfig = ''
+#        allow-emacs-pinentry
+#        pinentry-program ${pkgs.pinentry-gtk2}/bin/pinentry-gtk-2
+#      '';
     };
 
     lorri.enable = true;

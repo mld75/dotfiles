@@ -34,7 +34,7 @@ in stdenv.mkDerivation {
   meta = {
     description = "Prevents you from committing passwords and other sensitive information to a git repository";
     homepage = https://github.com/awslabs/git-secrets;
-    license = stdenv.lib.licenses.asl20;
-    platforms = stdenv.lib.platforms.all;
+    license = lib.licenses.asl20;
+    platforms = lib.platforms.all;
   };
 }

@@ -1,4 +1,4 @@
-{ pkgs, config, lib ? pkgs.stdenv.lib, ... }:
+{ pkgs, config, fetchurl, lib ? pkgs.stdenv.lib, ... }:
 let
   synology-drive-client = pkgs.callPackage ../pkgs/synology-drive-client { };
 in
@@ -6,6 +6,7 @@ in
   imports = [
     ./i3.nix
     ./polybar.nix
+    ./restream.nix
   ];
   fonts.fontconfig.enable = true;
 
@@ -15,9 +16,11 @@ in
       alacritty
       arandr
       autorandr
+      calibre
       discord
       dropbox
       evince
+      element-desktop
       feh
       fira-code
       font-awesome
@@ -31,21 +34,23 @@ in
       notify-desktop
       paprefs
       pavucontrol
-      postman # broken as of 20191021
       powerline-fonts
+      signal-desktop
       siji
       skype
       slack
       source-code-pro
       spotify
-      sweethome3d.application
-      sweethome3d.furniture-editor
-      sweethome3d.textures-editor
+      # sweethome3d.application
+      # sweethome3d.furniture-editor
+      # sweethome3d.textures-editor
+      teams
       unifont
-      virtualbox
+      #virtualbox
       vscode
       xclip
       #xmind
+      xorg.xev
       xournalpp
       xwallpaper
       zoom-us
@@ -110,6 +115,34 @@ in
              };
            };
         };
+#         output DP1
+# off
+# output DP2
+# off
+# output DP2-2
+# off
+# output HDMI1
+# off
+# output HDMI2
+# off
+# output VIRTUAL1
+# off
+# output DP2-1
+# crtc 1
+# mode 2048x1080
+# pos 0x0
+# rate 60.00
+# output DP2-3
+# crtc 2
+# mode 2048x1152
+# pos 2048x0
+# rate 60.00
+# output eDP1
+# crtc 0
+# mode 1920x1080
+# pos 0x1080
+# primary
+# rate 60.00
         "home-all" = {
            fingerprint = {
              inherit (fingerprints) eDP1 DP1-1 DP1-2 DP1-3 DP2-1 DP2-2 DP2-3;
@@ -157,12 +190,30 @@ in
         "cfhdojbkjhnklbpkdaibdccddilifddb" # adblock-plus
         "naepdomgkenhinolocfifgehidddafch" # browserpass-ce
         "gcbommkclmclpchllfjekcdonpmejbdp" # https-everywhere
+        "bfhkfdnddlhfippjbflipboognpdpoeh" # Read on reMarkable
       ];
     };
 
     firefox = {
       enable = true;
       #enableAdobeFlash = true;
+
+      extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+        browserpass
+        #browserpass-otp
+        https-everywhere
+        privacy-badger
+      ];
+
+      profiles = {
+        j0xaf = {
+          settings = {
+            "browser.backspace_action" = 0;
+            "browser.ctrlTab.recentlyUsedOrder" = false;
+          };
+          isDefault = true;
+        };
+      };
     };
     feh.enable = false;
     rofi.enable = true;
@@ -181,14 +232,15 @@ in
       enable = true;
         settings = {
           global = {
-            alignment = "center";
+            alignment = "right";
             allow_markup = true;
             bounce_freq = 0;
+            browser = "xdg-open";
             dmenu = "${pkgs.dmenu}/bin/dmenu -p dunst";
             follow = "keyboard";
             font = "Liberation Sans 12";
             format = "<b>%s</b>\n%b";
-            geometry = "300x5-30+20";
+            geometry = "350x5-30+20";
             horizontal_padding = 8;
             idle_threshold = 120;
             ignore_newline = false;
@@ -197,13 +249,14 @@ in
             markup = "full";
             monitor = 0;
             padding = 8;
+            progress_bar = true;
             separator_color = "#585858";
             separator_height = 2;
             show_age_threshold = 60;
             sort = true;
             startup_notification = true;
             sticky_history = true;
-            transparency = 40;
+            transparency = 20;
             word_wrap = true;
             icon_position = "left";
           };
@@ -220,12 +273,12 @@ in
           urgency_low = {
             background = "#383A3B";
             foreground = "#FFFFFF";
-            timeout = 10;
+            timeout = 5;
           };
           urgency_normal = {
             background = "#181818";
             foreground = "#E3C7AF";
-            timeout = 900;
+            timeout = 10;
           };
           urgency_critical = {
             background = "#FD5F00";

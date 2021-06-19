@@ -14,8 +14,8 @@
         mymaven = pkgs.callPackage ./pkgs/development/tools/build-managers/apache-maven {};
       in with pkgs; [
 #        jetbrains.idea-ultimate
-        (mymaven.overrideAttrs (oldAttrs: rec { jdk = pkgs.openjdk11; }))
-      openjdk11
+#        (mymaven.overrideAttrs (oldAttrs: rec { jdk = pkgs.openjdk11; }))
+#      openjdk11
     ];
   };
 }

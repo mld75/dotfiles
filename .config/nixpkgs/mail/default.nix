@@ -60,28 +60,28 @@ tls_trust_file /etc/ssl/certs/ca-certificates.crt'';
           groups.personal = {
             channels = {
               inbox = {
-                masterPattern = "";
-                slavePattern = "";
+                farPattern = "";
+                nearPattern = "";
               };
               sent = {
-                masterPattern = config.accounts.email.accounts.gmail.folders.sent;
-                slavePattern = "Sent";
+                farPattern = config.accounts.email.accounts.gmail.folders.sent;
+                nearPattern = "Sent";
               };
               trash = {
-                masterPattern = config.accounts.email.accounts.gmail.folders.trash;
-                slavePattern = "Trash";
+                farPattern = config.accounts.email.accounts.gmail.folders.trash;
+                nearPattern = "Trash";
               };
               starred = {
-                masterPattern = "[Gmail]/Starred";
-                slavePattern = "Starred";
+                farPattern = "[Gmail]/Starred";
+                nearPattern = "Starred";
               };
               drafts = {
-                masterPattern = config.accounts.email.accounts.gmail.folders.drafts;
-                slavePattern = "Drafts";
+                farPattern = config.accounts.email.accounts.gmail.folders.drafts;
+                nearPattern = "Drafts";
               };
               archive = {
-                masterPattern = "[Gmail]/All Mail";
-                slavePattern = "Archive";
+                farPattern = "[Gmail]/All Mail";
+                nearPattern = "Archive";
               };
             };
           };
@@ -102,6 +102,7 @@ tls_trust_file /etc/ssl/certs/ca-certificates.crt'';
         mu.enable = true;
 
         msmtp = {
+          enable = true;
           extraConfig = {
             host = "smtp.gmail.com";
             port = "587";

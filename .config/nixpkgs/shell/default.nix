@@ -1,6 +1,6 @@
 { pkgs, config, lib ? pkgs.stdenv.lib, ... }:
 let
-    myemacs = (pkgs.emacsWithPackages (with (pkgs.emacsPackagesNgGen pkgs.emacs26); vterm));
+    myemacs = (pkgs.emacsWithPackages (with (pkgs.emacsPackagesNgGen pkgs.emacs27); [vterm]));
     imgdupes = (pkgs.callPackage ../pkgs/imgdupes {});
 in {
   imports = [
@@ -14,14 +14,17 @@ in {
     in [
       ack
       acpi # for checking battery status on the CLI
-#      all-hies.versions.ghc864
       age
+      arping
+      arp-scan
       aqbanking
       autojump
       ansible
       binutils # for libvterm + emacs
       bmon
+      brightnessctl
       cmake # for libvterm + emacs
+      cntr
       curl
       dep
       diffpdf
@@ -30,14 +33,15 @@ in {
       #(exe haskellPackages.dhall-json)
       #(exe haskellPackages.dhall-text)
       dmenu
+      dnsutils
       docker_compose
       docker-machine
       #emacs26
       myemacs
       entr
       fasd
+      fd
       gcc
-      # (import (builtins.fetchTarball "https://github.com/hercules-ci/ghcide-nix/tarball/master") {}).ghcide-ghc865
       gitlab-runner
       gnupg
       go
@@ -69,6 +73,8 @@ in {
       kind
       kubectl
       kubectx
+      magic-wormhole
+      minicom
       minisign
       mtr
 #      (import fetchFromGitHub {
@@ -78,35 +84,38 @@ in {
 #        sha256 = "141944lmmpi06vi3d8z86syviaswyb3cqqd7pgd6ivr6qd6w843m";
 #      }).niv
       nixfmt
+      nix-index
       nix-prefetch-github
       nettools
       openjdk11
+      pandoc
       (pass.withExtensions(e: [ e.pass-import  e.pass-otp e.pass-import ]))
-      pinentry_emacs
-      #pinentry.gnome3
       plantuml
       playerctl
       psmisc
       pulsemixer
+      qrencode
       restic
       ripgrep
+      rmapi
       speedtest-cli
-      st
+      tcpdump
       terminator
 #      (terraform.withPlugins (p: [terraform-provider-libvirt p.aws p.template p.ignition p.local p.null]))
-      tig
       tmux
       tree
       unzip
       #vagrant
+      xz
       youtube-dl
       zbar
+      zip
       ];
 
     sessionVariables = {
       EDITOR = "${myemacs}/bin/emacsclient -t";
-      PAGER = "${pkgs.bat}/bin/bat";
       LESS = "-XR --quit-if-one-screen";
+      PAGER = "less";
       MANPATH = ":/usr/share/man";
       TERMINAL = "${pkgs.alacritty}/bin/alacritty";
     };
@@ -118,6 +127,7 @@ in {
 
     direnv.enable = true;
     fzf.enable = true;
+    gh.enable = true;
     gpg = {
       enable = true;
       settings = {
@@ -137,6 +147,10 @@ in {
           hostname = "ch-s012.rsync.net";
           user = "14210";
         };
+        "remarkable" = {
+          hostname = "10.11.99.1";
+          user = "root";
+        };
       };
     };
 
@@ -155,6 +169,7 @@ in {
           "docker-machine"
           "emacs"
           "fasd"
+          "fd"
           "fzf"
           "git"
           "helm"
@@ -187,7 +202,7 @@ in {
       };
       initExtra = ''
       # fd - cd to selected directory
-      fd() {
+      cdd() {
         local dir
         dir=$(find ''${1:-.} -path '*/\.*' -prune \
                         -o -type d -print 2> /dev/null | fzf +m) &&
