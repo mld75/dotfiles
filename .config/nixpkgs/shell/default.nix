@@ -11,6 +11,7 @@ in {
     packages = with pkgs; let
       exe = haskell.lib.justStaticExecutables;
 
+    # Only general usage tools, nothing related to development/programming/programming languages
     in [
       ack
       acpi # for checking battery status on the CLI
@@ -41,8 +42,6 @@ in {
       entr
       fasd
       fd
-      gcc
-      gitlab-runner
       gnupg
       go
 #      (exe haskellPackages.matterhorn)
@@ -55,24 +54,17 @@ in {
       hledger-web
       hledger-iadd
       htop
-      httpie
       icdiff
       iftop
 #      imgdupes
       iotop
       jdupes
-      jq
       less
       libtool # for libvterm + emacs
       libvterm-neovim
       links
 #     linphone # only 3.x, not 4.x
       lsof
-      #jetbrains.goland
-      kafkacat
-      kind
-      kubectl
-      kubectx
       magic-wormhole
       minicom
       minisign
@@ -87,7 +79,6 @@ in {
       nix-index
       nix-prefetch-github
       nettools
-      openjdk11
       pandoc
       (pass.withExtensions(e: [ e.pass-import  e.pass-otp e.pass-import ]))
       plantuml

@@ -24,6 +24,7 @@ in
   imports = [
     ./aws.nix
     ./mail
+    ./develop
     ./git.nix
 #    ./java.nix
 #    ./parcellite.nix
@@ -63,8 +64,6 @@ in
 #        pinentry-program ${pkgs.pinentry-gtk2}/bin/pinentry-gtk-2
 #      '';
     };
-
-    lorri.enable = true;
 
   #  udev.extraRules = ''
   #    SUBSYSTEMS=="usb", ATTRS{idVendor}=="", ATTRS{idProduct}=="", RUN+="/usr/bin/setxkbmap us altgr-intl"
